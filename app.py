@@ -3,11 +3,12 @@ import os
 
 app = Flask(__name__)
 
-# Serve static files
+# Serve the main page
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Serve static files (JS modules)
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory('static', path)
