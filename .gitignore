@@ -1,0 +1,27 @@
+# Ignore Python virtual environment
+venv/
+__pycache__/
+
+# Ignore Flask app instances and cached modules
+instance/
+.pytest_cache/
+.coverage
+.cache
+nosetests.xml
+
+# Ignore static and media files that are served by a web server
+static/dist/
+static/uploads/
+static/cache/
+
+# Ignore development-specific files
+.env
+.log
+*.swp
+*.swo
+*.swn
+
+# Ignore Docker-related files (if using Docker)
+.DS_Store
+.dockerignore
+docker-compose.yml
