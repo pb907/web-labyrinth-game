@@ -28,36 +28,123 @@
             left: 10px;
             color: white;
             font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        #game-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 14px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            z-index: 10;
+        }
+        .control-key {
+            display: inline-block;
+            background-color: #555;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin: 2px;
+        }
+        #game-over, #win-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: bold;
+            display: none;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 20;
         }
         #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             color: red;
-            font-size: 48px;
-            font-weight: bold;
-            display: none;
         }
         #win-screen {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             color: green;
-            font-size: 48px;
-            font-weight: bold;
-            display: none;
+        }
+        .restart-button {
+            display: block;
+            margin-top: 20px;
+            font-size: 24px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .restart-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
         <canvas id="game-canvas" width="800" height="600"></canvas>
-        <div id="game-info">Lives: <span id="lives">3</span></div>
-        <div id="game-over">GAME OVER</div>
-        <div id="win-screen">YOU WIN!</div>
+        <div id="game-info">
+            Lives: <span id="lives">3</span>
+        </div>
+        <div id="game-controls">
+            <div><span class="control-key">↑</span> <span class="control-key">↓</span> <span class="control-key">←</span> <span class="control-key">→</span> Move</div>
+            <div><span class="control-key">Space</span> Tap: Freeze Bomb / Hold: Regular Bomb</div>
+            <div style="margin-top: 10px;">
+                <div style="display:flex; align-items:center;">
+                    <div style="width:15px; height:15px; background-color:#3498db; border-radius:50%; margin-right:10px;"></div>
+                    Player
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <div style="width:15px; height:15px; background-color:#e74c3c; border-radius:50%; margin-right:10px;"></div>
+                    Hunter Monster
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <div style="width:15px; height:15px; background-color:#2ecc71; border-radius:50%; margin-right:10px;"></div>
+                    Patrol Monster
+                </div>
+            </div>
+        </div>
+        <div id="game-over">
+            GAME OVER
+            <button class="restart-button" onclick="location.reload()">Play Again</button>
+        </div>
+        <div id="win-screen">
+            YOU WIN!
+            <button class="restart-button" onclick="location.reload()">Play Again</button>
+        </div>
     </div>
-    <script src="game.js"></script>
+    
+    <!-- Import modules (only import the main game file) -->
+    <script type="module" src="game.js"></script>
+    
+    <!-- Fallback script if modules fail -->
+    <script>
+        window.addEventListener('error', function(event) {
+            console.error('Script error detected:', event.message);
+            document.getElementById('game-info').innerHTML += 
+                '<div style="color:red">Game error detected! Check console for details.</div>';
+        });
+        
+        // Check if game started after 2 seconds
+        setTimeout(function() {
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (ctx.getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0)) {
+                // Game seems to be running (canvas has non-black pixels)
+            } else {
+                console.log("Game may not have started properly, attempting recovery");
+                location.reload();
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
