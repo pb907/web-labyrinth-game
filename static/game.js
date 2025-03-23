@@ -5,7 +5,7 @@ const MONSTER_SIZE = 25;
 const BOMB_SIZE = 15;
 const EXPLOSION_SIZE = 100;
 const PLAYER_SPEED = 5;
-const MONSTER_SPEED = 2;
+const MONSTER_SPEED = 3.5; // Increased from 2 to 3.5
 const BOMB_TIMER = 3000; // 3 seconds
 
 // Game variables
@@ -332,10 +332,16 @@ function render() {
     
     // Draw bombs
     for (const bomb of bombs) {
-        ctx.fillStyle = bomb.timer < 1000 ? '#f00' : '#000';
+        // Changed bomb color from black to orange/brown to make it visible against the path
+        ctx.fillStyle = bomb.timer < 1000 ? '#f00' : '#FF8C00';
         ctx.beginPath();
         ctx.arc(bomb.x, bomb.y, BOMB_SIZE, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Add a dark outline to make it more visible
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.stroke();
     }
     
     // Draw explosions
